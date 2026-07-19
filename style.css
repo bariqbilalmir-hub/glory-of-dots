@@ -1,2 +1,15 @@
-html, body { margin:0; padding:0; overflow:hidden; background:#111; }
-canvas { display:block; width:100vw; height:100vh; }
+html, body {
+ margin:0;
+ padding:0;
+ overflow:hidden;
+ background:#111;
+ touch-action:none;
+}
+canvas {
+ display:block;
+ width:100vw;
+ height:100vh;
+}
+@media (max-width:600px){
+ canvas { width:100vw; height:100vh; }
+}
