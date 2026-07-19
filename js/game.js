@@ -15,39 +15,27 @@ export class Game {
   this.ai=new AI();
   canvas.addEventListener('click',()=>this.handleClick());
  }
- sendTroop(from,to,owner){
-  this.troops.push(new Troop(from,to,owner));
- }
+ sendTroop(from,to,owner){this.troops.push(new Troop(from,to,owner));}
  handleClick(){
   const node=this.nodes.find(n=>n.contains(this.input.mouse.x,this.input.mouse.y));
-  if(!node) return;
-  if(this.selected && this.selected!==node){
-   if(this.selected.owner==='player' && this.selected.units>0){
-    this.selected.units--;
-    this.sendTroop(this.selected,node,'player');
-   }
+  if(!node)return;
+  if(this.selected&&this.selected!==node&&this.selected.owner==='player'&&this.selected.units>0){
+   this.selected.units--;
+   this.sendTroop(this.selected,node,'player');
   } else this.selected=node;
  }
  update(){
+  this.nodes.forEach(n=>n.update());
   this.ai.update(this);
-  for(const troop of this.troops) troop.update();
-  for(const troop of this.troops){
-   if(troop.done){
-    if(troop.target.owner!==troop.owner){
-     troop.target.units--;
-     if(troop.target.units<=0){
-      troop.target.owner=troop.owner;
-      troop.target.units=1;
-     }
-    } else troop.target.units++;
-   }
-  }
+  this.troops.forEach(t=>t.update());
+  this.troops.filter(t=>t.done).forEach(t=>{
+   if(t.target.owner!==t.owner){
+    t.target.units--;
+    if(t.target.units<=0){t.target.owner=t.owner;t.target.units=1;}
+   } else t.target.units++;
+  });
   this.troops=this.troops.filter(t=>!t.done);
  }
- loop(){
-  this.update();
-  this.renderer.render(this.nodes,this.selected,this.troops);
-  requestAnimationFrame(()=>this.loop());
- }
+ loop(){this.update();this.renderer.render(this.nodes,this.selected,this.troops);requestAnimationFrame(()=>this.loop());}
  start(){this.loop();}
 }

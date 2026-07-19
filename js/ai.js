@@ -5,15 +5,13 @@ export class AI {
  }
  update(game){
   this.timer++;
-  if(this.timer%180!==0) return;
-
+  if(this.timer%150!==0) return;
   const own=game.nodes.filter(n=>n.owner===this.owner);
-  const targets=game.nodes.filter(n=>n.owner!=='bot');
-  if(!own.length || !targets.length) return;
-
-  const source=own[0];
-  const target=targets[Math.floor(Math.random()*targets.length)];
-  if(source.units>1){
+  const enemies=game.nodes.filter(n=>n.owner!=='bot');
+  if(!own.length||!enemies.length)return;
+  const source=own.sort((a,b)=>b.units-a.units)[0];
+  const target=enemies.sort((a,b)=>a.units-b.units)[0];
+  if(source.units>2){
    source.units--;
    game.sendTroop(source,target,this.owner);
   }

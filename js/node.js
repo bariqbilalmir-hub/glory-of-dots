@@ -1,6 +1,13 @@
 export class DotNode {
  constructor(x,y,owner='neutral'){
-  this.x=x; this.y=y; this.owner=owner; this.units=10; this.radius=35;
+  this.x=x; this.y=y; this.owner=owner; this.units=10; this.radius=35; this.production=0;
+ }
+ update(){
+  this.production++;
+  if(this.production>=60){
+   this.units++;
+   this.production=0;
+  }
  }
  draw(ctx,selected=false){
   ctx.beginPath();
