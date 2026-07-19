@@ -1,14 +1,9 @@
-export class GameState {
- constructor(){
-  this.status='playing';
-  this.turn='player';
+export function checkVictory(game){
+ const owners=[...new Set(game.nodes.map(n=>n.owner))];
+
+ if(owners.length===1){
+  return owners[0];
  }
 
- switchTurn(){
-  this.turn=this.turn==='player'?'ai':'player';
- }
-
- endGame(result){
-  this.status=result;
- }
+ return null;
 }
