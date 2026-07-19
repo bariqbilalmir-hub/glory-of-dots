@@ -1,6 +1,7 @@
 import { Renderer } from './renderer.js';
 import { createMap } from './map.js';
 import { Input } from './input.js';
+import { Troop } from './troop.js';
 
 export class Game {
  constructor(canvas){
@@ -9,14 +10,27 @@ export class Game {
   this.nodes=createMap();
   this.input=new Input(canvas);
   this.selected=null;
-  canvas.addEventListener('click',()=>this.selectNode());
+  this.troops=[];
+  canvas.addEventListener('click',()=>this.handleClick());
  }
- selectNode(){
-  this.selected=this.nodes.find(n=>n.contains(this.input.mouse.x,this.input.mouse.y)) || null;
+ handleClick(){
+  const node=this.nodes.find(n=>n.contains(this.input.mouse.x,this.input.mouse.y));
+  if(!node) return;
+  if(this.selected && this.selected!==node){
+   this.selected.units=Math.max(0,this.selected.units-1);
+   this.troops.push(new Troop(this.selected,node,'player'));
+  } else {
+   this.selected=node;
+  }
  }
- start(){this.loop();}
+ update(){
+  for(const troop of this.troops){troop.update();}
+  this.troops=this.troops.filter(t=>!t.done);
+ }
  loop(){
-  this.renderer.render(this.nodes,this.selected);
+  this.update();
+  this.renderer.render(this.nodes,this.selected,this.troops);
   requestAnimationFrame(()=>this.loop());
  }
+ start(){this.loop();}
 }
