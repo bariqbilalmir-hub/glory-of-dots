@@ -3,6 +3,7 @@ import { createMap } from './map.js';
 import { Input } from './input.js';
 import { Troop } from './troop.js';
 import { AI } from './ai.js';
+import { UI } from './ui.js';
 
 export class Game {
  constructor(canvas){
@@ -13,6 +14,7 @@ export class Game {
   this.selected=null;
   this.troops=[];
   this.ai=new AI();
+  this.ui=new UI();
   canvas.addEventListener('click',()=>this.handleClick());
  }
  sendTroop(from,to,owner){this.troops.push(new Troop(from,to,owner));}
@@ -35,7 +37,13 @@ export class Game {
    } else t.target.units++;
   });
   this.troops=this.troops.filter(t=>!t.done);
+  this.ui.update(this);
  }
- loop(){this.update();this.renderer.render(this.nodes,this.selected,this.troops);requestAnimationFrame(()=>this.loop());}
+ loop(){
+  this.update();
+  this.renderer.render(this.nodes,this.selected,this.troops);
+  this.ui.draw(this.renderer.ctx);
+  requestAnimationFrame(()=>this.loop());
+ }
  start(){this.loop();}
 }
