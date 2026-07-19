@@ -1,5 +1,7 @@
-export function renderNodes(ctx,nodes){
+export function renderNodes(ctx,nodes,camera=null){
  ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+
+ if(camera) camera.apply(ctx);
 
  nodes.forEach(node=>{
   ctx.beginPath();
@@ -11,4 +13,6 @@ export function renderNodes(ctx,nodes){
   ctx.font='14px Arial';
   ctx.fillText(node.units||0,node.x-8,node.y+5);
  });
+
+ if(camera) camera.reset(ctx);
 }
