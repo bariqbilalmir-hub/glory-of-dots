@@ -1,11 +1,15 @@
-export class Animation {
- constructor(){
-  this.time=0;
+export class MovementAnimation {
+ constructor(from,to){
+  this.x=from.x;
+  this.y=from.y;
+  this.target=to;
+  this.progress=0;
  }
+
  update(){
-  this.time++;
- }
- pulse(){
-  return 1 + Math.sin(this.time*0.08)*0.1;
+  this.progress=Math.min(1,this.progress+0.04);
+  this.x+=(this.target.x-this.x)*0.04;
+  this.y+=(this.target.y-this.y)*0.04;
+  return this.progress>=1;
  }
 }
