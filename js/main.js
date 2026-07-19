@@ -1,5 +1,17 @@
-import { Game } from './game.js';
+import { startGameLoop } from './mainLoop.js';
+import { TurnManager } from './turnManager.js';
+import { GameState } from './gameState.js';
+import { generateTroops } from './troops.js';
 
-const canvas = document.getElementById('gameCanvas');
-const game = new Game(canvas);
-game.start();
+export function initializeGame(game){
+ game.state = new GameState();
+ game.turnManager = new TurnManager(game);
+
+ setInterval(()=>{
+  if(game.state.status==='playing'){
+   generateTroops(game.nodes);
+  }
+ },5000);
+
+ startGameLoop(game);
+}
