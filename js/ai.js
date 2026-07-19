@@ -1,30 +1,21 @@
-export class AI {
- constructor(owner='bot'){
-  this.owner=owner;
-  this.timer=0;
+export class AIPlayer {
+ constructor(difficulty='normal'){
+  this.difficulty=difficulty;
  }
 
- update(game){
-  this.timer++;
-  if(this.timer % 150 !== 0) return;
+ chooseAction(game){
+  const enemies=game.nodes.filter(n=>n.owner!=='ai');
+  const owned=game.nodes.filter(n=>n.owner==='ai');
 
-  const own=game.nodes.filter(n=>n.owner===this.owner);
-  const enemies=game.nodes.filter(n=>n.owner!==this.owner);
+  if(!owned.length || !enemies.length) return null;
 
-  if(!own.length || !enemies.length) return;
+  const attacker=owned.sort((a,b)=>(b.units||0)-(a.units||0))[0];
+  const target=enemies.sort((a,b)=>(a.units||0)-(b.units||0))[0];
 
-  const source=own.sort((a,b)=>b.units-a.units)[0];
-  const target=enemies.sort((a,b)=>a.units-b.units)[0];
-
-  if(source.units>2){
-   const attack=Math.floor(source.units/2);
-   source.units-=attack;
-   target.units-=attack;
-
-   if(target.units<=0){
-    target.owner=this.owner;
-    target.units=attack;
-   }
+  if(attacker.units>target.units){
+   return {from:attacker,to:target};
   }
+
+  return null;
  }
 }
