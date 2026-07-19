@@ -9,21 +9,20 @@ export class Movement {
  }
 
  moveTo(target){
-  if(!this.selectedSource || !target) return false;
-  if(this.selectedSource===target) return false;
+  if(!this.selectedSource || !target || this.selectedSource===target) return false;
 
-  const amount=Math.floor(this.selectedSource.troops/2);
+  const amount=Math.floor(this.selectedSource.units/2);
   if(amount<=0) return false;
 
-  this.selectedSource.troops-=amount;
+  this.selectedSource.units-=amount;
 
   if(target.owner===this.selectedSource.owner){
-   target.troops+=amount;
+   target.units+=amount;
   } else {
-   target.troops-=amount;
-   if(target.troops<=0){
+   target.units-=amount;
+   if(target.units<=0){
     target.owner=this.selectedSource.owner;
-    target.troops=amount;
+    target.units=amount;
    }
   }
 

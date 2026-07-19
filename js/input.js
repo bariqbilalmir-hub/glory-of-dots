@@ -1,18 +1,26 @@
 export class Input {
- constructor(canvas){
+ constructor(canvas,movement){
   this.mouse={x:0,y:0};
-  this.selectedNode=null;
-  const update=(x,y)=>{
-   const r=canvas.getBoundingClientRect();
-   this.mouse.x=x-r.left;
-   this.mouse.y=y-r.top;
-  };
-  canvas.addEventListener('mousemove',e=>update(e.clientX,e.clientY));
+  this.movement=movement;
+
   canvas.addEventListener('click',()=>{
-   if(typeof nodes!=='undefined'){
-    this.selectedNode=findNodeAtPosition(this.mouse.x,this.mouse.y);
-    if(this.selectedNode) showNodeInfo(this.selectedNode);
+   if(typeof nodes==='undefined') return;
+   const node=findNodeAtPosition(this.mouse.x,this.mouse.y);
+   if(!node) return;
+
+   if(this.movement.selectedSource){
+    this.movement.moveTo(node);
+   } else {
+    this.movement.selectNode(node);
    }
+
+   showNodeInfo(node);
+  });
+
+  canvas.addEventListener('mousemove',e=>{
+   const r=canvas.getBoundingClientRect();
+   this.mouse.x=e.clientX-r.left;
+   this.mouse.y=e.clientY-r.top;
   });
  }
 }
@@ -26,5 +34,5 @@ function findNodeAtPosition(x,y){
 
 function showNodeInfo(node){
  const info=document.getElementById('node-info');
- if(info) info.innerHTML=`<h3>${node.name||'Node'}</h3><p>Owner: ${node.owner||'Unknown'}</p><p>Troops: ${node.troops||0}</p>`;
+ if(info) info.innerHTML=`<h3>${node.name||'Dot'}</h3><p>Owner: ${node.owner}</p><p>Units: ${node.units||0}</p>`;
 }
