@@ -1,0 +1,22 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "name": "First Conquest",
+      "difficulty": "Easy",
+      "nodes": 3
+    },
+    {
+      "id": 2,
+      "name": "Border Clash",
+      "difficulty": "Normal",
+      "nodes": 5
+    },
+    {
+      "id": 3,
+      "name": "Final Battle",
+      "difficulty": "Hard",
+      "nodes": 8
+    }
+  ]
+}
