@@ -1,13 +1,13 @@
 # Glory of Dots
 
-A 2D HTML5 strategy game inspired by dot-based conquest games.
+A 2D HTML5 strategy conquest game inspired by dot-based warfare games.
 
-## Current status
-Foundation phase: canvas engine and project structure created.
-
-## Planned features
-- Node capture system
+## Features
+- Node conquest gameplay
 - Troop movement
-- AI bots
-- Maps
-- Campaign and difficulty modes
+- Bot opponents
+- Unit production
+- Difficulty system
+
+## Development
+Built with HTML5 Canvas and JavaScript.
